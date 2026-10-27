@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# CloakMesh 隧道引擎入口（品牌名包装器）
+#
+# 上游构建产物名为 ziti-edge-tunnel。为避免改动上游 CMake 与 docker/脚本中的
+# 大量引用，这里提供 cloakmesh-tunnel 作为对外命令名，内部仍转调上游二进制。
+#
+# 安装（与 ziti-edge-tunnel 同目录）：
+#   install -m 0755 branding/bin/cloakmesh-tunnel /usr/local/bin/cloakmesh-tunnel
+#
+# 两个名称的行为完全一致，参数原样透传。
+set -eu
+
+SELF_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
+for candidate in \
+    "$SELF_DIR/ziti-edge-tunnel" \
+    "$SELF_DIR/../lib/cloakmesh/ziti-edge-tunnel" \
+    "/usr/local/lib/cloakmesh/ziti-edge-tunnel" \
+    "/usr/local/bin/ziti-edge-tunnel" \
+    "/usr/bin/ziti-edge-tunnel"
+do
+    if [ -x "$candidate" ]; then
+        exec "$candidate" "$@"
+    fi
+done
+
+echo "cloakmesh-tunnel: 未找到底层 ziti-edge-tunnel 可执行文件" >&2
+echo "cloakmesh-tunnel: 请先构建本仓库（见 README.zh-CN.md）或设置 CLOAKMESH_TUNNEL_BIN" >&2
+exit 127
