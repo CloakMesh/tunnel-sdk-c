@@ -32,7 +32,7 @@ cloakmesh-tunnel --version        # 与 ziti-edge-tunnel 完全等价
 |---|---|
 | `cloakmesh-core` | 控制器/路由器（本引擎连接的零信任网络） |
 | `cloakmesh-desktop-edge-win` | Windows 客户端，内置本引擎 |
-| `cloakmesh-tunnel-apple` / `cloakmesh-tunnel-android` | 移动端客户端 |
+| `cloakmesh-tunnel-android` | Android 客户端 |
 
 ## 许可
 
